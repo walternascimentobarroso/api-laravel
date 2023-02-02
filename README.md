@@ -1,4 +1,4 @@
-# Templat PHP-Nginx-Docker
+# API Laravel
 
 <details open>
 <summary><h2> :scroll: Overview </h2></summary>
