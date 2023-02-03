@@ -14,6 +14,7 @@ First clone the project:
 
 ```
 git clone https://github.com/walternascimentobarroso/php-nginx-docker.git
+php artisan migrate:fresh --seed
 ```
 
 Make the build
