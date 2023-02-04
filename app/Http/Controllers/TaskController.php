@@ -25,11 +25,7 @@ class TaskController extends Controller
             return response()->json($validator->getMessageBag(), 422);
         }
 
-        $task = new Task;
-        $task->name = $request->name;
-        $task->done = $request->done;
-        $task->due_date = $request->due_date;
-        $task->save();
+        $task = Task::create($request->all());
         return response()->json($task, 201);
     }
 
