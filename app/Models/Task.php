@@ -10,4 +10,15 @@ class Task extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public $fillable = [
+        'name',
+        'done',
+        'due_date'
+    ];
+
+    public $casts = [
+        'done' => 'boolean',
+        'due_date' => 'date'
+    ];
 }

@@ -10,7 +10,7 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::all();
+        $tasks = Task::paginate(10);
         return response()->json($tasks);
     }
 
@@ -18,6 +18,7 @@ class TaskController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'done' => 'required|boolean',
         ]);
 
         if ($validator->fails()) {
@@ -55,10 +56,7 @@ class TaskController extends Controller
         if (!$task) {
             return response()->json('Task not found', 404);
         }
-        $task->name = $request->name;
-        $task->done = $request->done;
-        $task->due_date = $request->due_date;
-        $task->save();
+        $task->update($request->all());
         return response()->json($task, 201);
     }
 
