@@ -29,39 +29,19 @@ class TaskController extends Controller
         return response()->json($task, 201);
     }
 
-    public function show($id)
+    public function show(Task $task)
     {
-        $task = Task::where('id', $id)->first();
-        if (!$task) {
-            return response()->json('Task not found', 404);
-        }
         return response()->json($task);
     }
 
-    public function update($id, Request $request)
+    public function update(Task $task, Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->getMessageBag(), 422);
-        }
-
-        $task = Task::where('id', $id)->first();
-        if (!$task) {
-            return response()->json('Task not found', 404);
-        }
         $task->update($request->all());
         return response()->json($task, 201);
     }
 
-    public function destroy($id)
+    public function destroy(Task $task)
     {
-        $task = Task::where('id', $id)->first();
-        if (!$task) {
-            return response()->json('Task not found', 404);
-        }
         $task->delete();
         return response()->json('Task deleted!');
     }

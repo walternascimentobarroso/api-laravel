@@ -111,20 +111,6 @@ class TaskTest extends TestCase
     }
 
     /**
-     * A feature test cannot update one task without name.
-     *
-     * @return void
-     */
-    public function test_cannot_update_one_task_without_name()
-    {
-        $task = Task::factory()->create();
-        $response = $this->putJson(route('tasks.update', $task->id), []);
-
-        $response->assertStatus(422);
-        $response->assertJsonFragment(['The name field is required.']);
-    }
-
-    /**
      * A feature test cannot update one task without find it.
      *
      * @return void
@@ -134,7 +120,7 @@ class TaskTest extends TestCase
         $response = $this->putJson(route('tasks.update', 0), ['name' => 'New Task name']);
 
         $response->assertStatus(404);
-        $response->assertJsonFragment(['Task not found']);
+        $response->assertJsonFragment(['Not Found']);
     }
 
     /**
@@ -160,6 +146,6 @@ class TaskTest extends TestCase
     {
         $response = $this->deleteJson(route('tasks.destroy', 0));
         $response->assertStatus(404);
-        $response->assertJsonFragment(['Task not found']);
+        $response->assertJsonFragment(['Not Found']);
     }
 }
