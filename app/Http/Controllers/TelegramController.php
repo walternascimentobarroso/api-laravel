@@ -5,44 +5,49 @@ namespace App\Http\Controllers;
 class TelegramController extends Controller
 {
     private $token;
+    private $chatId;
+    private $url = "https://api.telegram.org/bot";
 
     public function __construct()
     {
         $this->token = env('TELEGRAM_TOKEN');
+        $this->chatId = env('TELEGRAM_CHAT_ID');
     }
-    public function index()
+
+    public function me()
     {
-
-        $chat_id = "-651094039";
-        $mensagem = urlencode("Mensagem de exemplo!");
-
-        $url = "https://api.telegram.org/bot$this->token/sendMessage?chat_id=$chat_id&text=$mensagem";
-
+        $url = "$this->url$this->token/getMe";
         $response = file_get_contents($url);
         $result = json_decode($response, true);
 
         return response()->json($result);
     }
 
-    public function chats()
+    public function sendMessage()
     {
-        $url = "https://api.telegram.org/bot$this->token/getUpdates";
-
+        $mensagem = urlencode("Mensagem de exemplo!");
+        $url = "$this->url$this->token/sendMessage?chat_id=$this->chatId&text=$mensagem";
         $response = file_get_contents($url);
         $result = json_decode($response, true);
 
-        $chats = [];
-        foreach ($result["result"] as $update) {
-            if (isset($update["message"])) {
-                $message = $update["message"];
-                $chat_id = $message["chat"]["id"];
-                $chat_type = $message["chat"]["type"];
-                $chats[] = [$chat_type, $chat_id];
+        return response()->json($result);
+    }
+
+    public function groups()
+    {
+        $url = "$this->url$this->token/getUpdates";
+        $response = file_get_contents($url);
+        $response = json_decode($response, true);
+        $groups = [];
+
+        foreach ($response['result'] as $update) {
+            if (isset($update['message']['chat']['type']) && $update['message']['chat']['type'] === 'group') {
+                $groupId = $update['message']['chat']['id'];
+                $groupName = $update['message']['chat']['title'];
+                $groups[$groupId] = $groupName;
             }
         }
 
-        $chats = array_map("unserialize", array_unique(array_map("serialize", $chats)));
-
-        return response()->json(array_values($chats));
+        return response()->json(['ok' => true, 'groups' => $groups]);
     }
 }

@@ -7,8 +7,9 @@ use App\Http\Controllers\TelegramController;
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('tasks', TaskController::class);
-    Route::get('telegram', [TelegramController::class, 'index']);
-    Route::get('telegram/chats', [TelegramController::class, 'chats']);
+    Route::get('telegram/me', [TelegramController::class, 'me'])->name('telegram.me');
+    Route::get('telegram/groups', [TelegramController::class, 'groups'])->name('telegram.groups');
+    Route::get('telegram/sendMessage', [TelegramController::class, 'sendMessage'])->name('telegram.sendMessage');
 });
 
 Route::get('/me', [AuthController::class, 'me'])->name('auth.me')->middleware('auth:sanctum');
