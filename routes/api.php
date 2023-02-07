@@ -11,7 +11,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('telegram/chats', [TelegramController::class, 'chats']);
 });
 
-Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-Route::post('/register', [AuthController::class, 'register']);
+Route::get('/me', [AuthController::class, 'me'])->name('auth.me')->middleware('auth:sanctum');
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth:sanctum');
+Route::post('/register', [AuthController::class, 'register'])->name('auth.register');

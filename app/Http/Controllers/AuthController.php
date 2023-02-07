@@ -4,15 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
     public function register(Request $request, User $user)
     {
-        $userData = $request->only('name', 'email', 'password');
-        if (!$user = $user->create($userData)) {
-            abort(500, 'error created user');
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->getMessageBag(), 422);
         }
+        $userData = $request->only('name', 'email', 'password');
+
+        $email = $request->input('email');
+        if (User::where('email', $email)->first()) {
+            return response()->json('The email is already registered!');
+        }
+
+        $user = $user->create($userData);
         return response()->json(['data' => $user], 200);
     }
 
