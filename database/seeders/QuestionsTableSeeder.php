@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Option;
+use App\Models\Question;
 use Illuminate\Database\Seeder;
 
 class QuestionsTableSeeder extends Seeder
@@ -35,12 +37,12 @@ class QuestionsTableSeeder extends Seeder
         ];
 
         foreach ($questions as $questionData) {
-            $question = \App\Models\Question::create([
+            $question = Question::create([
                 'question' => $questionData['question'],
             ]);
 
             foreach ($questionData['options'] as $optionData) {
-                \App\Models\Option::create([
+                Option::create([
                     'question_id' => $question->id,
                     'text' => $optionData['text'],
                     'correct' => $optionData['correct'],

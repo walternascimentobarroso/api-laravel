@@ -15,26 +15,8 @@ class OptionController extends Controller
      */
     public function index()
     {
-        return Option::get();
-    }
-    public function update(Request $request, $id)
-    {
-        $option = Option::find($id);
-
-        if (!$option) {
-            return response()->json([
-                'message' => 'Opção não encontrada.'
-            ], 404);
-        }
-
-        $option->text = $request->input('text');
-        $option->correct = $request->input('correct');
-        $option->save();
-
-        return response()->json([
-            'message' => 'Opção atualizada com sucesso.',
-            'data' => $option
-        ], 200);
+        $options = Option::paginate(10);
+        return response()->json($options);
     }
 
     public function store(Request $request)
@@ -43,7 +25,7 @@ class OptionController extends Controller
 
         if (!$question) {
             return response()->json([
-                'message' => 'Questão não encontrada.'
+                'message' => 'Question not found.'
             ], 404);
         }
 
@@ -58,25 +40,24 @@ class OptionController extends Controller
         ], 201);
     }
 
+    public function update(Option $option, Request $request)
+    {
+        $option->update($request->all());
+
+        return response()->json($option, 201);
+    }
+
+
+
     public function show(Option $option)
     {
         return response()->json($option);
     }
 
-    public function destroy($id)
+    public function destroy(Option $option)
     {
-        $option = Option::find($id);
-
-        if (!$option) {
-            return response()->json([
-                'message' => 'Opção não encontrada.'
-            ], 404);
-        }
-
         $option->delete();
 
-        return response()->json([
-            'message' => 'Opção excluída com sucesso.'
-        ], 200);
+        return response()->json('Option deleted!');
     }
 }

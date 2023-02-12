@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Option;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class QuestionController extends Controller
 {
@@ -15,7 +16,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        return Question::with('options')->get();
+        return Question::with('options')->paginate(10);
     }
 
     /**
@@ -26,6 +27,15 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'question' => 'required|string|max:255',
+            'options' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->getMessageBag(), 422);
+        }
+
         $question = Question::create([
             'question' => $request->input('question'),
         ]);
@@ -77,8 +87,6 @@ class QuestionController extends Controller
     public function destroy(Question $question)
     {
         $question->delete();
-        return response()->json([
-            'message' => 'Question excluded com success.'
-        ], 200);
+        return response()->json('Question deleted!');
     }
 }

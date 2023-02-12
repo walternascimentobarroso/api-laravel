@@ -7,6 +7,9 @@ use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * php artisan test --filter AuthTest
+ */
 class AuthTest extends TestCase
 {
     use RefreshDatabase;

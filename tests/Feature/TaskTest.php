@@ -8,6 +8,9 @@ use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * php artisan test --filter TaskTest
+ */
 class TaskTest extends TestCase
 {
     use RefreshDatabase;

@@ -7,6 +7,9 @@ use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * php artisan test --filter TelegramTest
+ */
 class TelegramTest extends TestCase
 {
     use RefreshDatabase;
